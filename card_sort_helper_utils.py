@@ -1,5 +1,17 @@
-import pandas as pd
 from pprint import pprint
+
+def install_and_import(package):
+    import importlib
+    try:
+        importlib.import_module(package)
+    except ImportError:
+        import pip
+        pip.main(['install', package])
+    finally:
+        globals()[package] = importlib.import_module(package)
+
+# install_and_import('pandas')
+import pandas as pd
 
 def process(input_file, output_file, cards_for_analysis):
     df = pd.read_excel(input_file)
