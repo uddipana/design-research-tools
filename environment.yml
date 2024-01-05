@@ -1,4 +1,4 @@
-name: td-exp
+name: myenv
 channels:
   - conda-forge
 dependencies:
