@@ -18,6 +18,9 @@ def print_list_of_available_card_labels(input_file):
 def aggregate_and_modify(df, cards_for_analysis):
     agg = df.groupby(["participant", "category label"], as_index=False).agg(cards=pd.NamedAgg(column="card label", aggfunc=lambda x: list(x)))
 
+    def my_cards(cards):
+        return sorted([c for c in cards if c in cards_for_analysis])
+
     def remove_cards_for_analysis(cards):
         return sorted([c for c in cards if c not in cards_for_analysis])
 
@@ -30,6 +33,7 @@ def aggregate_and_modify(df, cards_for_analysis):
         return round(common / len(cards) * 100, 2)
 
     agg["cards"] = agg["cards"].apply(sorted)
+    agg["my_cards"] = agg["cards"].apply(my_cards)
     agg["extra_cards"] = agg["cards"].apply(remove_cards_for_analysis)
     agg["finding_percentage"] = agg["cards"].apply(get_finding_percentage)
     agg["participant_sort_percentage"] = agg["cards"].apply(get_participant_sort_percentage)
